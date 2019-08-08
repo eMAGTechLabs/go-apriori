@@ -1,6 +1,8 @@
 # Go-Apriori
 Go-Apriori is a simple go implementation of the Apriori algorithm for finding frequent sets and association rules 
 
+[![GoDoc](https://godoc.org/github.com/eMAGTechLabs/go-apriori?status.svg)](https://godoc.org/github.com/eMAGTechLabs/go-apriori)
+
 ## Short Apriori Algorithm description 
 Apriori is a classic algorithm for learning association rules. Apriori is designed to operate on databases / data sets 
 containing transactions (for example, collections of items bought by customers)
