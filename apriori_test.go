@@ -1,4 +1,4 @@
-package Apriori
+package apriori
 
 import (
 	"fmt"
