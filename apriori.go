@@ -1,4 +1,4 @@
-package Apriori
+package apriori
 
 import (
 	"errors"
@@ -9,19 +9,23 @@ const combinationStringChannelLastElement = "STOP"
 const combinationIntChannelLastElement = -1
 const minLengthNeededForNextCandidates = 3
 
+// SupportRecord containing items and their support
 type SupportRecord struct {
 	items   []string
 	support float64
 }
 
+// GetItems in current support record
 func (sr SupportRecord) GetItems() []string {
 	return sr.items
 }
 
+// GetSupport for current support record items
 func (sr SupportRecord) GetSupport() float64 {
 	return sr.support
 }
 
+// OrderedStatistic is the struct that contain base items + added items and their confidence and lift
 type OrderedStatistic struct {
 	base       []string
 	add        []string
@@ -29,35 +33,43 @@ type OrderedStatistic struct {
 	lift       float64
 }
 
+// GetBase will return the base items
 func (os OrderedStatistic) GetBase() []string {
 	return os.base
 }
 
+// GetAdd will return the add slice from the OrderedStatistic
 func (os OrderedStatistic) GetAdd() []string {
 	return os.add
 }
 
+// GetConfidence will return the confidence from the OrderedStatistic
 func (os OrderedStatistic) GetConfidence() float64 {
 	return os.confidence
 }
 
+// GetLift will return the lift from the OrderedStatistic
 func (os OrderedStatistic) GetLift() float64 {
 	return os.lift
 }
 
+// RelationRecord contains both the support record and the ordered statistics slice
 type RelationRecord struct {
 	supportRecord    SupportRecord
 	orderedStatistic []OrderedStatistic
 }
 
+// GetSupportRecord will return the support record
 func (r RelationRecord) GetSupportRecord() SupportRecord {
 	return r.supportRecord
 }
 
+// GetOrderedStatistic will return the OrderedStatistic slice
 func (r RelationRecord) GetOrderedStatistic() []OrderedStatistic {
 	return r.orderedStatistic
 }
 
+// Options struct contain the options that the apriori algorithm will take into account
 type Options struct {
 	minSupport    float64 // The minimum support of relations (float).
 	minConfidence float64 // The minimum confidence of relations (float).
@@ -74,16 +86,19 @@ func (options Options) check() error {
 	return nil
 }
 
+// Apriori is the main struct that contains the algorithm data
 type Apriori struct {
 	transactionNo       int64
 	items               []string
 	transactionIndexMap map[interface{}][]int64
 }
 
+// NewOptions is a quick way to create an Options struct
 func NewOptions(minSupport float64, minConfidence float64, minLift float64, maxLength int) Options {
 	return Options{minSupport: minSupport, minConfidence: minConfidence, minLift: minLift, maxLength: maxLength}
 }
 
+// NewApriori is a quick way to create an Apriori struct and add transactions to it
 func NewApriori(transactions [][]string) *Apriori {
 	var a Apriori
 	a.transactionIndexMap = make(map[interface{}][]int64)
@@ -94,6 +109,7 @@ func NewApriori(transactions [][]string) *Apriori {
 	return &a
 }
 
+// Calculate Apriori results based on provided options
 func (a *Apriori) Calculate(options Options) []RelationRecord {
 	if err := options.check(); err != nil {
 		panic(err)
